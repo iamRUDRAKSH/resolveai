@@ -1,0 +1,49 @@
+{
+  "timestamp_utc": "2026-10-11T19:03:15.138949+00:00",
+  "python": "3.11.6",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+  "cpu_count": 16,
+  "gemini_model": "gemini-3.8-flash",
+  "embedding_model": "all-MiniLM-L6-v2",
+  "top_k": 3,
+  "tau": 1.0,
+  "human_support_labels": [
+    "Account-specific suspension/disabled investigation",
+    "Change registered email",
+    "Duplicate charge",
+    "Enrollment transfer/manual restore",
+    "Refund requests",
+    "Restore deleted account"
+  ],
+  "n8n_webhook_url_in_code": "http://localhost:5678/webhook/support-ticket",
+  "n8n_mode": "stubbed (no webhook available)",
+  "runs": 3,
+  "pace_s": 15.0,
+  "packages": {
+    "chromadb": "1.5.9",
+    "sentence-transformers": "6.1.0",
+    "google-genai": "2.25.0",
+    "torch": "2.14.0",
+    "transformers": "5.17.0"
+  },
+  "chroma_collection_count": 19,
+  "chroma_collection_configuration": {
+    "hnsw": {
+      "space": "l2",
+      "ef_construction": 100,
+      "ef_search": 100,
+      "max_neighbors": 16,
+      "resize_factor": 1.2,
+      "sync_threshold": 1000
+    },
+    "spann": null,
+    "embedding_function": {
+      "type": "known",
+      "name": "default",
+      "config": {}
+    }
+  },
+  "chroma_collection_metadata": null,
+  "unstubbed_webhook_probe": "reachable"
+}

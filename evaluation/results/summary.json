@@ -1,0 +1,976 @@
+{
+  "paced": {
+    "environment": {
+      "timestamp_utc": "2026-10-11T19:03:15.138949+00:00",
+      "python": "3.11.6",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+      "cpu_count": 16,
+      "gemini_model": "gemini-3.8-flash",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "top_k": 3,
+      "tau": 1.0,
+      "human_support_labels": [
+        "Account-specific suspension/disabled investigation",
+        "Change registered email",
+        "Duplicate charge",
+        "Enrollment transfer/manual restore",
+        "Refund requests",
+        "Restore deleted account"
+      ],
+      "n8n_webhook_url_in_code": "http://localhost:5678/webhook/support-ticket",
+      "n8n_mode": "stubbed (no webhook available)",
+      "runs": 3,
+      "pace_s": 15.0,
+      "packages": {
+        "chromadb": "1.5.9",
+        "sentence-transformers": "6.1.0",
+        "google-genai": "2.25.0",
+        "torch": "2.14.0",
+        "transformers": "5.17.0"
+      },
+      "chroma_collection_count": 19,
+      "chroma_collection_configuration": {
+        "hnsw": {
+          "space": "l2",
+          "ef_construction": 100,
+          "ef_search": 100,
+          "max_neighbors": 16,
+          "resize_factor": 1.2,
+          "sync_threshold": 1000
+        },
+        "spann": null,
+        "embedding_function": {
+          "type": "known",
+          "name": "default",
+          "config": {}
+        }
+      },
+      "chroma_collection_metadata": null
+    },
+    "runs": [
+      1,
+      2,
+      3
+    ],
+    "routing_deterministic_across_runs": true,
+    "routing": {
+      "all": {
+        "accuracy": {
+          "num": 25,
+          "den": 35,
+          "rate": 0.7142857142857143
+        },
+        "confusion": {
+          "esc_esc": 9,
+          "ans_esc": 2,
+          "esc_ans": 8,
+          "ans_ans": 16,
+          "_legend": "<predicted>_<expected>"
+        },
+        "escalation_precision": 0.8181818181818182,
+        "escalation_recall": 0.5294117647058824,
+        "escalation_f1": 0.6428571428571428
+      },
+      "set_A_authors": {
+        "accuracy": {
+          "num": 9,
+          "den": 11,
+          "rate": 0.8181818181818182
+        },
+        "confusion": {
+          "esc_esc": 4,
+          "ans_esc": 0,
+          "esc_ans": 2,
+          "ans_ans": 5,
+          "_legend": "<predicted>_<expected>"
+        },
+        "escalation_precision": 1.0,
+        "escalation_recall": 0.6666666666666666,
+        "escalation_f1": 0.8
+      },
+      "set_B_constructed": {
+        "accuracy": {
+          "num": 16,
+          "den": 24,
+          "rate": 0.6666666666666666
+        },
+        "confusion": {
+          "esc_esc": 5,
+          "ans_esc": 2,
+          "esc_ans": 6,
+          "ans_ans": 11,
+          "_legend": "<predicted>_<expected>"
+        },
+        "escalation_precision": 0.7142857142857143,
+        "escalation_recall": 0.45454545454545453,
+        "escalation_f1": 0.5555555555555556
+      },
+      "by_category": {
+        "answerable": {
+          "num": 16,
+          "den": 18,
+          "rate": 0.8888888888888888
+        },
+        "human_required": {
+          "num": 3,
+          "den": 10,
+          "rate": 0.3
+        },
+        "missing_or_unclear": {
+          "num": 2,
+          "den": 2,
+          "rate": 1.0
+        },
+        "out_of_scope": {
+          "num": 4,
+          "den": 5,
+          "rate": 0.8
+        }
+      },
+      "errors": [
+        {
+          "id": "A08",
+          "query": "Please restore my deleted account.",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Restore a deleted account",
+          "d1": 0.9084596037864685,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "A09",
+          "query": "Change my registered email address.",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Change your registered email address",
+          "d1": 0.42914900183677673,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B07",
+          "query": "Why has my account been suspended?",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Account-specific investigation",
+          "d1": 0.7734886407852173,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B11",
+          "query": "Please transfer my enrollment to a different course.",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Enrollment changes",
+          "d1": 0.8930748701095581,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B12",
+          "query": "Money was deducted from my bank but my purchase shows as failed.",
+          "expected": "ANSWER",
+          "decision": "ESCALATE",
+          "top1": "Payment appears unsuccessful",
+          "d1": 0.9056031703948975,
+          "reason": "Knowledge base requires human support for: Duplicate charge"
+        },
+        {
+          "id": "B13",
+          "query": "What details should I include when contacting support about a payment problem?",
+          "expected": "ANSWER",
+          "decision": "ESCALATE",
+          "top1": "Information needed for payment support",
+          "d1": 1.018518090248108,
+          "reason": "Retrieved evidence is not sufficiently relevant."
+        },
+        {
+          "id": "B15",
+          "query": "I want my money back for a course I purchased.",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Newly purchased course is missing",
+          "d1": 0.8958851099014282,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B17",
+          "query": "I need to update the email address linked to my account.",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Change your registered email address",
+          "d1": 0.6832244992256165,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B19",
+          "query": "Can you bring back my account that I deleted last week?",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Restore a deleted account",
+          "d1": 0.8624600172042847,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B21",
+          "query": "Can I download a certificate after finishing a course?",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Newly purchased course is missing",
+          "d1": 0.9873722791671753,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        }
+      ],
+      "diagnostic_corrected_labels": {
+        "accuracy": {
+          "num": 28,
+          "den": 35,
+          "rate": 0.8
+        },
+        "confusion": {
+          "esc_esc": 15,
+          "ans_esc": 5,
+          "esc_ans": 2,
+          "ans_ans": 13,
+          "_legend": "<predicted>_<expected>"
+        },
+        "escalation_precision": 0.75,
+        "escalation_recall": 0.8823529411764706,
+        "escalation_f1": 0.8108108108108107
+      },
+      "escalation_reasons": {
+        "answer": 24,
+        "policy_label": 4,
+        "distance>tau": 7
+      }
+    },
+    "retrieval": {
+      "hit_at_1": {
+        "num": 22,
+        "den": 27,
+        "rate": 0.8148148148148148
+      },
+      "hit_at_3": {
+        "num": 25,
+        "den": 27,
+        "rate": 0.9259259259259259
+      },
+      "d1_in_scope": {
+        "n": 27,
+        "mean": 0.7455801378797602,
+        "median": 0.7734886407852173,
+        "p95": 0.9490720570087433,
+        "min": 0.37855440378189087,
+        "max": 1.018518090248108,
+        "stdev": 0.1653605762644108
+      },
+      "d1_no_gold_evidence": {
+        "n": 8,
+        "mean": 1.1754880920052528,
+        "median": 1.0932599902153015,
+        "p95": 1.643704903125763,
+        "min": 0.9873722791671753,
+        "max": 1.9187793731689453,
+        "stdev": 0.3050178122959155
+      }
+    },
+    "resolution": {
+      "automated_answer_rate_all_queries": {
+        "num": 72,
+        "den": 105,
+        "rate": 0.6857142857142857
+      },
+      "correct_automated_resolution_of_answerable": {
+        "num": 38,
+        "den": 54,
+        "rate": 0.7037037037037037
+      },
+      "answerable_routed_to_answer": {
+        "num": 48,
+        "den": 54,
+        "rate": 0.8888888888888888
+      },
+      "unsafe_auto_answer_of_escalation_required": {
+        "num": 24,
+        "den": 51,
+        "rate": 0.47058823529411764
+      },
+      "unsafe_auto_answers_that_deferred_or_abstained_in_text": {
+        "num": 24,
+        "den": 24,
+        "rate": 1.0
+      }
+    },
+    "answer_accuracy": {
+      "gemini": {
+        "answers": 5,
+        "all_key_facts_present": {
+          "num": 5,
+          "den": 5,
+          "rate": 1.0
+        },
+        "key_fact_recall": {
+          "num": 8,
+          "den": 8,
+          "rate": 1.0
+        }
+      },
+      "knowledge_base_fallback": {
+        "answers": 43,
+        "all_key_facts_present": {
+          "num": 33,
+          "den": 43,
+          "rate": 0.7674418604651163
+        },
+        "key_fact_recall": {
+          "num": 49,
+          "den": 67,
+          "rate": 0.7313432835820896
+        }
+      },
+      "injected_failure_fallback": {
+        "answers": 16,
+        "all_key_facts_present": {
+          "num": 12,
+          "den": 16,
+          "rate": 0.75
+        },
+        "source_values": {
+          "knowledge_base_fallback": 16
+        }
+      }
+    },
+    "generation_availability": {
+      "generation_calls": 72,
+      "succeeded": 5,
+      "fell_back": 67,
+      "error_codes": {
+        "503": 4,
+        "429": 63
+      },
+      "quota_ids": {
+        "None": 4,
+        "GenerateRequestsPerDayPerProjectPerModel-FreeTier": 63
+      }
+    },
+    "latency_s": {
+      "agent_init_first": 6.117111500003375,
+      "agent_init_subsequent": {
+        "n": 3,
+        "mean": 4.912007700001898,
+        "median": 4.9090362999995705,
+        "p95": 4.941327129999991,
+        "min": 4.882071800006088,
+        "max": 4.944915000000037,
+        "stdev": 0.031526795902061734
+      },
+      "retrieval": {
+        "n": 105,
+        "mean": 0.04984038285675481,
+        "median": 0.04018309999082703,
+        "p95": 0.05690902000060305,
+        "min": 0.030382500000996515,
+        "max": 0.8142055000062101,
+        "stdev": 0.07644996232344795
+      },
+      "routing": {
+        "n": 105,
+        "mean": 1.0480953191983558e-05,
+        "median": 5.599998985417187e-06,
+        "p95": 1.0040003689937294e-05,
+        "min": 3.0999945010989904e-06,
+        "max": 0.0002911000046879053,
+        "stdev": 3.230960310528238e-05
+      },
+      "end_to_end_answer_gemini": {
+        "n": 5,
+        "mean": 8.585997459996724,
+        "median": 7.336954400001559,
+        "p95": 16.36596443999442,
+        "min": 3.958773399994243,
+        "max": 18.054539599994314,
+        "stdev": 5.8095175180363325
+      },
+      "generation_gemini": {
+        "n": 5,
+        "mean": 8.525465520005673,
+        "median": 7.297863900006632,
+        "p95": 16.24813826000318,
+        "min": 3.914001900004223,
+        "max": 17.91692740000144,
+        "stdev": 5.771235716863501
+      },
+      "end_to_end_answer_after_api_error": {
+        "n": 67,
+        "mean": 0.5016600671643479,
+        "median": 0.3905672999972012,
+        "p95": 1.0568351200039614,
+        "min": 0.3184546999982558,
+        "max": 3.941676500005997,
+        "stdev": 0.4851455504752914
+      },
+      "end_to_end_answer_injected_fallback": {
+        "n": 16,
+        "mean": 0.0395507625044047,
+        "median": 0.03740990000369493,
+        "p95": 0.050506949999544304,
+        "min": 0.0317122999986168,
+        "max": 0.06411600000865292,
+        "stdev": 0.007476612669422234
+      },
+      "end_to_end_escalate_to_ticket_payload": {
+        "n": 33,
+        "mean": 0.040366866668619245,
+        "median": 0.03984599999967031,
+        "p95": 0.047530539997387676,
+        "min": 0.032279000006383285,
+        "max": 0.055047699992428534,
+        "stdev": 0.00491156354265427
+      },
+      "ticket_construction": {
+        "n": 33,
+        "mean": 0.00011509393913332711,
+        "median": 3.460000152699649e-05,
+        "p95": 0.000510699997539632,
+        "min": 2.6000008801929653e-05,
+        "max": 0.0008317000028910115,
+        "stdev": 0.00019531196420042045
+      }
+    }
+  },
+  "unpaced": {
+    "environment": {
+      "timestamp_utc": "2026-10-11T19:00:03.210897+00:00",
+      "python": "3.11.6",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+      "cpu_count": 16,
+      "gemini_model": "gemini-3.8-flash",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "top_k": 3,
+      "tau": 1.0,
+      "human_support_labels": [
+        "Account-specific suspension/disabled investigation",
+        "Change registered email",
+        "Duplicate charge",
+        "Enrollment transfer/manual restore",
+        "Refund requests",
+        "Restore deleted account"
+      ],
+      "n8n_webhook_url_in_code": "http://localhost:5678/webhook/support-ticket",
+      "n8n_mode": "stubbed (no webhook available)",
+      "runs": 3,
+      "packages": {
+        "chromadb": "1.5.9",
+        "sentence-transformers": "6.1.0",
+        "google-genai": "2.25.0",
+        "torch": "2.14.0",
+        "transformers": "5.17.0"
+      },
+      "chroma_collection_count": 19,
+      "chroma_collection_configuration": {
+        "hnsw": {
+          "space": "l2",
+          "ef_construction": 100,
+          "ef_search": 100,
+          "max_neighbors": 16,
+          "resize_factor": 1.2,
+          "sync_threshold": 1000
+        },
+        "spann": null,
+        "embedding_function": {
+          "type": "known",
+          "name": "default",
+          "config": {}
+        }
+      },
+      "chroma_collection_metadata": null
+    },
+    "runs": [
+      1,
+      2,
+      3
+    ],
+    "routing_deterministic_across_runs": true,
+    "routing": {
+      "all": {
+        "accuracy": {
+          "num": 25,
+          "den": 35,
+          "rate": 0.7142857142857143
+        },
+        "confusion": {
+          "esc_esc": 9,
+          "ans_esc": 2,
+          "esc_ans": 8,
+          "ans_ans": 16,
+          "_legend": "<predicted>_<expected>"
+        },
+        "escalation_precision": 0.8181818181818182,
+        "escalation_recall": 0.5294117647058824,
+        "escalation_f1": 0.6428571428571428
+      },
+      "set_A_authors": {
+        "accuracy": {
+          "num": 9,
+          "den": 11,
+          "rate": 0.8181818181818182
+        },
+        "confusion": {
+          "esc_esc": 4,
+          "ans_esc": 0,
+          "esc_ans": 2,
+          "ans_ans": 5,
+          "_legend": "<predicted>_<expected>"
+        },
+        "escalation_precision": 1.0,
+        "escalation_recall": 0.6666666666666666,
+        "escalation_f1": 0.8
+      },
+      "set_B_constructed": {
+        "accuracy": {
+          "num": 16,
+          "den": 24,
+          "rate": 0.6666666666666666
+        },
+        "confusion": {
+          "esc_esc": 5,
+          "ans_esc": 2,
+          "esc_ans": 6,
+          "ans_ans": 11,
+          "_legend": "<predicted>_<expected>"
+        },
+        "escalation_precision": 0.7142857142857143,
+        "escalation_recall": 0.45454545454545453,
+        "escalation_f1": 0.5555555555555556
+      },
+      "by_category": {
+        "answerable": {
+          "num": 16,
+          "den": 18,
+          "rate": 0.8888888888888888
+        },
+        "human_required": {
+          "num": 3,
+          "den": 10,
+          "rate": 0.3
+        },
+        "missing_or_unclear": {
+          "num": 2,
+          "den": 2,
+          "rate": 1.0
+        },
+        "out_of_scope": {
+          "num": 4,
+          "den": 5,
+          "rate": 0.8
+        }
+      },
+      "errors": [
+        {
+          "id": "A08",
+          "query": "Please restore my deleted account.",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Restore a deleted account",
+          "d1": 0.9084596037864685,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "A09",
+          "query": "Change my registered email address.",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Change your registered email address",
+          "d1": 0.42914900183677673,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B07",
+          "query": "Why has my account been suspended?",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Account-specific investigation",
+          "d1": 0.7734886407852173,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B11",
+          "query": "Please transfer my enrollment to a different course.",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Enrollment changes",
+          "d1": 0.8930748701095581,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B12",
+          "query": "Money was deducted from my bank but my purchase shows as failed.",
+          "expected": "ANSWER",
+          "decision": "ESCALATE",
+          "top1": "Payment appears unsuccessful",
+          "d1": 0.9056031703948975,
+          "reason": "Knowledge base requires human support for: Duplicate charge"
+        },
+        {
+          "id": "B13",
+          "query": "What details should I include when contacting support about a payment problem?",
+          "expected": "ANSWER",
+          "decision": "ESCALATE",
+          "top1": "Information needed for payment support",
+          "d1": 1.018518090248108,
+          "reason": "Retrieved evidence is not sufficiently relevant."
+        },
+        {
+          "id": "B15",
+          "query": "I want my money back for a course I purchased.",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Newly purchased course is missing",
+          "d1": 0.8958851099014282,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B17",
+          "query": "I need to update the email address linked to my account.",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Change your registered email address",
+          "d1": 0.6832244992256165,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B19",
+          "query": "Can you bring back my account that I deleted last week?",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Restore a deleted account",
+          "d1": 0.8624600172042847,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        },
+        {
+          "id": "B21",
+          "query": "Can I download a certificate after finishing a course?",
+          "expected": "ESCALATE",
+          "decision": "ANSWER",
+          "top1": "Newly purchased course is missing",
+          "d1": 0.9873722791671753,
+          "reason": "Relevant knowledge was found and no human-review policy applies."
+        }
+      ],
+      "diagnostic_corrected_labels": {
+        "accuracy": {
+          "num": 28,
+          "den": 35,
+          "rate": 0.8
+        },
+        "confusion": {
+          "esc_esc": 15,
+          "ans_esc": 5,
+          "esc_ans": 2,
+          "ans_ans": 13,
+          "_legend": "<predicted>_<expected>"
+        },
+        "escalation_precision": 0.75,
+        "escalation_recall": 0.8823529411764706,
+        "escalation_f1": 0.8108108108108107
+      },
+      "escalation_reasons": {
+        "answer": 24,
+        "policy_label": 4,
+        "distance>tau": 7
+      }
+    },
+    "retrieval": {
+      "hit_at_1": {
+        "num": 22,
+        "den": 27,
+        "rate": 0.8148148148148148
+      },
+      "hit_at_3": {
+        "num": 25,
+        "den": 27,
+        "rate": 0.9259259259259259
+      },
+      "d1_in_scope": {
+        "n": 27,
+        "mean": 0.7455801378797602,
+        "median": 0.7734886407852173,
+        "p95": 0.9490720570087433,
+        "min": 0.37855440378189087,
+        "max": 1.018518090248108,
+        "stdev": 0.1653605762644108
+      },
+      "d1_no_gold_evidence": {
+        "n": 8,
+        "mean": 1.1754880920052528,
+        "median": 1.0932599902153015,
+        "p95": 1.643704903125763,
+        "min": 0.9873722791671753,
+        "max": 1.9187793731689453,
+        "stdev": 0.3050178122959155
+      }
+    },
+    "resolution": {
+      "automated_answer_rate_all_queries": {
+        "num": 72,
+        "den": 105,
+        "rate": 0.6857142857142857
+      },
+      "correct_automated_resolution_of_answerable": {
+        "num": 36,
+        "den": 54,
+        "rate": 0.6666666666666666
+      },
+      "answerable_routed_to_answer": {
+        "num": 48,
+        "den": 54,
+        "rate": 0.8888888888888888
+      },
+      "unsafe_auto_answer_of_escalation_required": {
+        "num": 24,
+        "den": 51,
+        "rate": 0.47058823529411764
+      },
+      "unsafe_auto_answers_that_deferred_or_abstained_in_text": {
+        "num": 24,
+        "den": 24,
+        "rate": 1.0
+      }
+    },
+    "answer_accuracy": {
+      "gemini": {
+        "answers": 5,
+        "all_key_facts_present": {
+          "num": 5,
+          "den": 5,
+          "rate": 1.0
+        },
+        "key_fact_recall": {
+          "num": 8,
+          "den": 8,
+          "rate": 1.0
+        }
+      },
+      "knowledge_base_fallback": {
+        "answers": 43,
+        "all_key_facts_present": {
+          "num": 31,
+          "den": 43,
+          "rate": 0.7209302325581395
+        },
+        "key_fact_recall": {
+          "num": 46,
+          "den": 67,
+          "rate": 0.6865671641791045
+        }
+      },
+      "injected_failure_fallback": {
+        "answers": 16,
+        "all_key_facts_present": {
+          "num": 12,
+          "den": 16,
+          "rate": 0.75
+        },
+        "source_values": {
+          "knowledge_base_fallback": 16
+        }
+      }
+    },
+    "generation_availability": {
+      "generation_calls": 72,
+      "succeeded": 7,
+      "fell_back": 65,
+      "error_codes": "not recorded in this run",
+      "quota_ids": null
+    },
+    "latency_s": {
+      "agent_init_first": 6.272898499999428,
+      "agent_init_subsequent": {
+        "n": 3,
+        "mean": 4.964250766667344,
+        "median": 4.9440924000082305,
+        "p95": 5.009591340000043,
+        "min": 4.931790899994667,
+        "max": 5.016868999999133,
+        "stdev": 0.04598195934129945
+      },
+      "retrieval": {
+        "n": 105,
+        "mean": 0.043906545714153686,
+        "median": 0.04166160000022501,
+        "p95": 0.05621460000111256,
+        "min": 0.03066489999764599,
+        "max": 0.1425974000012502,
+        "stdev": 0.012308488798043232
+      },
+      "routing": {
+        "n": 105,
+        "mean": 6.997143472766592e-06,
+        "median": 6.599992047995329e-06,
+        "p95": 1.0080003994517028e-05,
+        "min": 3.3999967854470015e-06,
+        "max": 2.5300003471784294e-05,
+        "stdev": 2.6132604956006022e-06
+      },
+      "end_to_end_answer_gemini": {
+        "n": 7,
+        "mean": 10.324615085711619,
+        "median": 3.8707812999928137,
+        "p95": 27.536246899995604,
+        "min": 2.9397527999972226,
+        "max": 31.720184599995264,
+        "stdev": 10.873283679334497
+      },
+      "generation_gemini": {
+        "n": 7,
+        "mean": 10.285844528571554,
+        "median": 3.8342304000107106,
+        "p95": 27.499498959997435,
+        "min": 2.8928601999941748,
+        "max": 31.685489499999676,
+        "stdev": 10.874636067784676
+      },
+      "end_to_end_answer_after_api_error": {
+        "n": 65,
+        "mean": 0.43985667538497814,
+        "median": 0.37198470000294037,
+        "p95": 0.746105320006609,
+        "min": 0.2934110999922268,
+        "max": 2.509726700009196,
+        "stdev": 0.3319483362076358
+      },
+      "end_to_end_answer_injected_fallback": {
+        "n": 16,
+        "mean": 0.0427821187504378,
+        "median": 0.04286149999825284,
+        "p95": 0.050666150003962684,
+        "min": 0.03234030000749044,
+        "max": 0.05226260000199545,
+        "stdev": 0.00495750710069137
+      },
+      "end_to_end_escalate_to_ticket_payload": {
+        "n": 33,
+        "mean": 0.04384407272631175,
+        "median": 0.04236010000749957,
+        "p95": 0.05282533999707084,
+        "min": 0.03373250000004191,
+        "max": 0.08725209999829531,
+        "stdev": 0.009460626142722159
+      },
+      "ticket_construction": {
+        "n": 33,
+        "mean": 3.664848433497051e-05,
+        "median": 3.579999611247331e-05,
+        "p95": 4.4939998770132664e-05,
+        "min": 2.9300004825927317e-05,
+        "max": 5.699999746866524e-05,
+        "stdev": 5.805229183881532e-06
+      }
+    }
+  },
+  "pooled_answers_by_generator": {
+    "gemini": {
+      "answers": 10,
+      "distinct_queries": 9,
+      "all_key_facts_present": {
+        "num": 10,
+        "den": 10,
+        "rate": 1.0
+      },
+      "key_fact_recall": {
+        "num": 16,
+        "den": 16,
+        "rate": 1.0
+      },
+      "end_to_end_s": {
+        "n": 10,
+        "mean": 9.384649069997248,
+        "median": 5.652505250000104,
+        "p95": 25.570644349994836,
+        "min": 2.9397527999972226,
+        "max": 31.720184599995264,
+        "stdev": 9.126879017781889
+      },
+      "generation_s": {
+        "n": 10,
+        "mean": 9.335556850003195,
+        "median": 5.611708300006285,
+        "p95": 25.48963655500047,
+        "min": 2.8928601999941748,
+        "max": 31.685489499999676,
+        "stdev": 9.118303823500883
+      },
+      "failures_by_id": []
+    },
+    "knowledge_base_fallback": {
+      "answers": 86,
+      "distinct_queries": 16,
+      "all_key_facts_present": {
+        "num": 64,
+        "den": 86,
+        "rate": 0.7441860465116279
+      },
+      "key_fact_recall": {
+        "num": 95,
+        "den": 134,
+        "rate": 0.7089552238805971
+      },
+      "end_to_end_s": {
+        "n": 86,
+        "mean": 0.4922871686051854,
+        "median": 0.37921294999250676,
+        "p95": 1.0931783750093018,
+        "min": 0.3065416999888839,
+        "max": 3.941676500005997,
+        "stdev": 0.4807013434549893
+      },
+      "generation_s": {
+        "n": 86,
+        "mean": 0.43849648023261095,
+        "median": 0.3388113000037265,
+        "p95": 0.7070408999934443,
+        "min": 0.2666361000010511,
+        "max": 3.898042600005283,
+        "stdev": 0.47188905766119477
+      },
+      "failures_by_id": [
+        "B01",
+        "B01",
+        "B01",
+        "B01",
+        "B01",
+        "B02",
+        "B02",
+        "B02",
+        "B02",
+        "B02",
+        "B03",
+        "B03",
+        "B03",
+        "B03",
+        "B03",
+        "B03",
+        "B06",
+        "B06",
+        "B06",
+        "B06",
+        "B06",
+        "B06"
+      ]
+    },
+    "gemini_on_escalation_required": {
+      "answers": 2,
+      "text_mentions_human_support_or_unavailability": 2,
+      "ids": [
+        "B11",
+        "B17"
+      ]
+    },
+    "generation_calls_total": 144,
+    "generation_calls_succeeded": 12
+  },
+  "unstubbed_webhook_probe": {
+    "probe": "ConnectionError",
+    "elapsed_s": 4.121
+  }
+}
